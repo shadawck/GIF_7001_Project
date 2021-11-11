@@ -20,7 +20,7 @@ python3 demo.py --config config/vox-256.yaml --checkpoint data/vox-cpk.pth.tar -
 
 Source images :
 
-![Image source](./first-order-model/first-order-model-demo/images/00.png)
+![00](https://user-images.githubusercontent.com/10743909/141336860-41e15806-5af6-4465-bbfa-dee4cae77cf6.png)
 
 
 Source video :
