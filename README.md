@@ -3,15 +3,16 @@
 ### Dev requirements
 
 ```sh
-> pip install pipenv 
+> pip3 install -r requirements.txt 
 ```
 
-A la racine du projet run :
-
+### Run
+(Need a webcam)
 ```sh
-> pipenv sync
+> python3 src/face_mesh.py
 ```
 
+<!-- 
 # GAN First order model test 
 
 ```sh
@@ -32,3 +33,4 @@ OUTPUT :
 
 https://user-images.githubusercontent.com/10743909/141328526-ef330e9d-7d0a-4c83-8e2a-92f3475d8b2c.mp4
 
+-->
