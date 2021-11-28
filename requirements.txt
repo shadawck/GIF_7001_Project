@@ -1,3 +1,4 @@
 face_recognition
 opencv-python 
 dlib # os dependencies : cmake
+mediapipe

@@ -100,6 +100,7 @@ def find_best_frame(source, driving, cpu=False):
         if new_norm < norm:
             norm = new_norm
             frame_num = i
+            
     return frame_num
 
 if __name__ == "__main__":
