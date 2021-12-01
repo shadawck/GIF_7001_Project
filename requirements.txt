@@ -2,3 +2,5 @@ face_recognition
 opencv-python 
 dlib # os dependencies : cmake
 mediapipe
+### To install open3D on Ubuntu 21.04
+# pip3 install --user --pre https://storage.googleapis.com/open3d-releases-master/python-wheels/open3d-0.13.0+7eee2de-cp39-cp39-manylinux_2_27_x86_64.whl
