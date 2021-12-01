@@ -122,10 +122,52 @@ print(xyz)
 import open3d as o3d
 pcd = o3d.geometry.PointCloud()
 pcd.points = o3d.utility.Vector3dVector(xyz)
+pcd.estimate_normals()
+normals = np.asarray(pcd.normals)
+pcd.normals = o3d.utility.Vector3dVector(normals) # Normal flipping
+pcd.orient_normals_to_align_with_direction()
+
+
 o3d.io.write_point_cloud("face.ply", pcd)
 
 pcd_load = o3d.io.read_point_cloud("face.ply")
 xyz_load = np.asarray(pcd_load.points)
-o3d.visualization.draw_geometries([pcd_load])
+#o3d.visualization.draw_geometries([pcd_load])
 
 ### Use ball algo or other to construct mesh from point cloud
+
+### BPA 
+distances = pcd.compute_nearest_neighbor_distance()
+avg_dist = np.mean(distances)
+radius = 3 * avg_dist
+
+
+### BPA Algo
+bpa_mesh = o3d.geometry.TriangleMesh.create_from_point_cloud_ball_pivoting(pcd,o3d.utility.DoubleVector([radius, radius * 2]))
+
+### Poisson algo
+poisson_mesh = o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(pcd, depth=8, width=0, scale=1.1, linear_fit=False)[0]
+
+o3d.io.write_triangle_mesh("bpa_mesh.ply", bpa_mesh)
+o3d.io.write_triangle_mesh("poisson_mesh.ply", poisson_mesh)
+
+
+bpa_load = o3d.io.read_point_cloud("bpa_mesh.ply")
+o3d.visualization.draw_geometries([bpa_load], mesh_show_back_face=True)
+
+poisson_load = o3d.io.read_point_cloud("poisson_mesh.ply")
+o3d.visualization.draw_geometries([poisson_load], mesh_show_back_face=True)
+
+
+pcd = o3d.io.read_point_cloud("bpa_mesh.ply")
+o3d.visualization.draw_geometries([pcd], point_show_normal=True, mesh_show_back_face=True)
+
+radii = [0.005, 0.01, 0.02, 0.04, 0.07, 0.1]
+rec_mesh = o3d.geometry.TriangleMesh.create_from_point_cloud_ball_pivoting(pcd, o3d.utility.DoubleVector(radii))
+o3d.visualization.draw_geometries([pcd, rec_mesh], mesh_show_back_face=True)
+
+pcd = o3d.io.read_point_cloud("face.ply")
+print('run Poisson surface reconstruction')
+with o3d.utility.VerbosityContextManager(o3d.utility.VerbosityLevel.Debug) as cm:
+    mesh, densities = o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(pcd, depth=8, width=0, scale=1.1, linear_fit=False)
+o3d.visualization.draw_geometries([mesh], mesh_show_back_face=True)
